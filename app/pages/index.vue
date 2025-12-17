@@ -17,25 +17,27 @@
     </div>
 
     <!-- Featured Section -->
-    <div class="flex flex-col lg:flex-row w-full">
+    <div class="flex flex-col lg:flex-row w-full mt-8 mb-10 lg:mt-16 lg:mb-16">
       <div class="w-full lg:w-1/2">
-        <h1 class="text-center lg:hidden font-bold mb-6">
+        <h1 class="text-center lg:hidden font-bold mb-6 text-3xl">
           I'M MY WILDEST DREAMS COLLECTION
         </h1>
         <img
           src="/img/wildest-dreams-2.png"
-          class="block w-full"
+          class="block w-[90%] mx-auto mb-8"
           alt="Wildest Dreams 2"
         />
         <img
           src="/img/wildest-dreams.png"
-          class="block w-full"
+          class="block w-[90%] mx-auto"
           alt="Wildest Dreams"
         />
       </div>
       <div class="w-full lg:w-1/2">
-        <div class="text-center px-4 py-8 lg:py-12">
-          <h1 class="hidden lg:block font-bold mb-6">
+        <div
+          class="text-center px-8 py-8 lg:py-12 lg:px-0 lg:pr-10 lg:sticky lg:top-10"
+        >
+          <h1 class="hidden lg:block font-bold mb-6 text-3xl">
             I'M MY WILDEST DREAM COLLECTION
           </h1>
           <div class="space-y-4 text-lg">
