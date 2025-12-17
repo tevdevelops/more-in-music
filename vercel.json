@@ -1,6 +1,5 @@
 {
-  "version": 2,
-  "buildCommand": null,
-  "outputDirectory": ".",
-  "framework": null
+  "buildCommand": "nuxt build",
+  "devCommand": "nuxt dev",
+  "installCommand": "npm install"
 }
