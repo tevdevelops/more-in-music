@@ -48,7 +48,7 @@ import { PortableText } from '@portabletext/vue'
 import type { PortableTextBlock } from '@portabletext/types'
 import imageUrlBuilder from '@sanity/image-url'
 import { getSanityClient } from '~/lib/sanity.client'
-import { h } from 'vue'
+import { usePortableTextComponents } from '~/composables/usePortableTextComponents'
 import type { ColumnContentBlock } from '~/types/block.types'
 
 interface Column {
@@ -148,7 +148,22 @@ const query = `*[_type == "homePage"][0]{
           _type,
           _type == "richTextBlock" => {
             ...,
-            content
+            alignment,
+            sticky,
+            content[]{
+              ...,
+              _type == "buttonBlock" => {
+                ...,
+                linkType,
+                url,
+                pageReference->{
+                  _id,
+                  _type,
+                  "slug": slug.current,
+                  title
+                }
+              }
+            }
           },
           _type == "videoEmbedBlock" => {
             ...,
@@ -243,16 +258,5 @@ useHead({
 })
 
 // Portable Text components
-const components = {
-  types: {
-    image: ({ value }: any) => {
-      const imageUrl = builder.image(value).url()
-      return h('img', {
-        src: imageUrl,
-        alt: value.alt || '',
-        class: 'rounded-lg my-4',
-      })
-    },
-  },
-}
+const components = usePortableTextComponents()
 </script>

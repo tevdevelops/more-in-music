@@ -25,7 +25,8 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
-h1, h2 {
+h1,
+h2 {
   font-size: 2rem;
   font-weight: 700;
   line-height: 1.2;

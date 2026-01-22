@@ -16,8 +16,8 @@
     "@portabletext/vue": "^1.0.14",
     "@sanity/client": "^7.14.0",
     "@sanity/image-url": "^1.0.2",
-    "keen-slider": "^6.8.6",
     "nuxt": "^4.2.2",
+    "nuxt-swiper": "^2.0.1",
     "vue": "^3.5.25",
     "vue-router": "^4.6.4"
   },

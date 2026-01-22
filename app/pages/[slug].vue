@@ -1,10 +1,5 @@
 <template>
   <div>
-    <!-- Page Title -->
-    <div v-if="page.title" class="container mx-auto px-4 py-8">
-      <h1 class="text-4xl font-bold">{{ page.title }}</h1>
-    </div>
-
     <!-- Sections -->
     <template v-if="page.sections && page.sections.length > 0">
       <SectionRenderer
@@ -13,9 +8,12 @@
         :section="section"
       />
     </template>
-    
+
     <!-- Legacy Content Section (fallback) -->
-    <div v-else-if="page.content" class="container mx-auto px-4 py-12 max-w-4xl">
+    <div
+      v-else-if="page.content"
+      class="container mx-auto px-4 py-12 max-w-4xl"
+    >
       <div class="prose prose-lg max-w-none">
         <PortableText :value="page.content" :components="components" />
       </div>
@@ -26,9 +24,7 @@
 <script setup lang="ts">
 import { PortableText } from '@portabletext/vue'
 import type { PortableTextBlock } from '@portabletext/types'
-import imageUrlBuilder from '@sanity/image-url'
-import { getSanityClient } from '~/lib/sanity.client'
-import { h } from 'vue'
+import { usePortableTextComponents } from '~/composables/usePortableTextComponents'
 import type { ColumnContentBlock } from '~/types/block.types'
 
 interface Column {
@@ -96,7 +92,22 @@ const query = `*[_type == "page" && slug.current == $slug][0]{
           _type,
           _type == "richTextBlock" => {
             ...,
-            content
+            alignment,
+            sticky,
+            content[]{
+              ...,
+              _type == "buttonBlock" => {
+                ...,
+                linkType,
+                url,
+                pageReference->{
+                  _id,
+                  _type,
+                  "slug": slug.current,
+                  title
+                }
+              }
+            }
           },
           _type == "videoEmbedBlock" => {
             ...,
@@ -121,6 +132,17 @@ const query = `*[_type == "page" && slug.current == $slug][0]{
               },
               alt,
               caption
+            }
+          },
+          _type == "pageHeaderBlock" => {
+            ...,
+            text,
+            image {
+              asset-> {
+                _id,
+                url
+              },
+              alt
             }
           }
         }
@@ -150,9 +172,6 @@ if (!page) {
   })
 }
 
-// Build image URL builder
-const builder = imageUrlBuilder(getSanityClient())
-
 // Set SEO metadata
 useHead({
   title: page.seo?.title || page.title,
@@ -177,16 +196,5 @@ useHead({
 })
 
 // Portable Text components (for legacy content)
-const components = {
-  types: {
-    image: ({ value }: any) => {
-      const imageUrl = builder.image(value).url()
-      return h('img', {
-        src: imageUrl,
-        alt: value.alt || '',
-        class: 'rounded-lg my-4',
-      })
-    },
-  },
-}
+const components = usePortableTextComponents()
 </script>

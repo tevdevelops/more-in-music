@@ -1,9 +1,25 @@
 import type { PortableTextBlock } from '@portabletext/types'
 
+export interface ButtonBlock {
+  _key: string
+  _type: 'buttonBlock'
+  text: string
+  linkType?: 'url' | 'reference'
+  url?: string
+  pageReference?: {
+    _id: string
+    _type: 'page' | 'homePage'
+    slug?: string
+    title?: string
+  }
+}
+
 export interface RichTextBlock {
   _key: string
   _type: 'richTextBlock'
-  content?: PortableTextBlock[]
+  alignment?: 'left' | 'center' | 'right'
+  sticky?: boolean
+  content?: (PortableTextBlock | ButtonBlock)[]
 }
 
 export interface VideoEmbedBlock {
@@ -35,4 +51,17 @@ export interface GalleryBlock {
   }>
 }
 
-export type ColumnContentBlock = RichTextBlock | VideoEmbedBlock | GalleryBlock
+export interface PageHeaderBlock {
+  _key: string
+  _type: 'pageHeaderBlock'
+  text?: string
+  image?: {
+    asset?: {
+      _id?: string
+      url?: string
+    }
+    alt?: string
+  }
+}
+
+export type ColumnContentBlock = RichTextBlock | VideoEmbedBlock | GalleryBlock | PageHeaderBlock
