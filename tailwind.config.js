@@ -11,6 +11,8 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: '#A8AAC4',
+        secondary: '#CA97AA',
         brand: {
           nav: '#A8AAC4',
           dark: '#30345C',

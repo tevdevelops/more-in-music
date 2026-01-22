@@ -31,8 +31,17 @@
       </div>
     </section>
 
-    <!-- Content Section -->
-    <div v-if="homePage.content" class="container mx-auto px-4 py-12 max-w-4xl">
+    <!-- Sections -->
+    <template v-if="homePage.sections && homePage.sections.length > 0">
+      <SectionRenderer
+        v-for="(section, index) in homePage.sections"
+        :key="section._id || index"
+        :section="section"
+      />
+    </template>
+    
+    <!-- Legacy Content Section (fallback) -->
+    <div v-else-if="homePage.content" class="container mx-auto px-4 py-12 max-w-4xl">
       <div class="prose prose-lg max-w-none">
         <PortableText :value="homePage.content" :components="components" />
       </div>
@@ -45,6 +54,46 @@ import { PortableText } from '@portabletext/vue'
 import type { PortableTextBlock } from '@portabletext/types'
 import imageUrlBuilder from '@sanity/image-url'
 import { getSanityClient } from '~/lib/sanity.client'
+
+interface RichTextBlock {
+  _key: string
+  _type: 'richTextBlock'
+  content?: PortableTextBlock[]
+}
+
+interface VideoEmbedBlock {
+  _key: string
+  _type: 'videoEmbedBlock'
+  videoType: 'youtube' | 'vimeo' | 'upload'
+  youtubeUrl?: string
+  vimeoUrl?: string
+  videoFile?: {
+    asset?: {
+      _id?: string
+      url?: string
+    }
+  }
+  caption?: string
+}
+
+interface Column {
+  _key: string
+  content?: Array<RichTextBlock | VideoEmbedBlock>
+}
+
+interface Section {
+  _id?: string
+  title?: string
+  fullWidth?: boolean
+  backgroundColor?: string
+  backgroundImage?: {
+    asset?: {
+      _id?: string
+      url?: string
+    }
+  }
+  columns?: Column[]
+}
 
 interface HomePage {
   _id: string
@@ -69,6 +118,7 @@ interface HomePage {
     heading?: string
     description?: string
   }
+  sections?: Section[]
   content?: PortableTextBlock[]
   seo?: {
     title?: string
@@ -104,6 +154,42 @@ const query = `*[_type == "homePage"][0]{
       content_position,
       heading,
       description
+    },
+    sections[]->{
+      _id,
+      title,
+      fullWidth,
+      backgroundColor,
+      backgroundImage {
+        asset-> {
+          _id,
+          url
+        }
+      },
+      columns[]{
+        _key,
+        content[]{
+          _key,
+          _type,
+          _type == "richTextBlock" => {
+            ...,
+            content
+          },
+          _type == "videoEmbedBlock" => {
+            ...,
+            videoType,
+            youtubeUrl,
+            vimeoUrl,
+            videoFile {
+              asset-> {
+                _id,
+                url
+              }
+            },
+            caption
+          }
+        }
+      }
     },
     content,
     seo {
