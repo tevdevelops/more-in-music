@@ -2,7 +2,7 @@
   <div class="column-content">
     <template v-for="(block, index) in content" :key="block._key || index">
       <div
-        v-if="block._type === 'richTextBlock'"
+        v-if="block._type === 'richTextBlock' && block.content"
         class="prose prose-lg max-w-none"
       >
         <PortableText
@@ -18,41 +18,23 @@
         :video-file="block.videoFile"
         :caption="block.caption"
       />
+      <GalleryBlock
+        v-else-if="block._type === 'galleryBlock'"
+        :images="block.images || []"
+      />
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
 import { PortableText } from '@portabletext/vue'
-import type { PortableTextBlock } from '@portabletext/types'
 import imageUrlBuilder from '@sanity/image-url'
 import { getSanityClient } from '~/lib/sanity.client'
 import { h } from 'vue'
-import VideoEmbed from './VideoEmbed.vue'
-
-interface RichTextBlock {
-  _key: string
-  _type: 'richTextBlock'
-  content?: PortableTextBlock[]
-}
-
-interface VideoEmbedBlock {
-  _key: string
-  _type: 'videoEmbedBlock'
-  videoType: 'youtube' | 'vimeo' | 'upload'
-  youtubeUrl?: string
-  vimeoUrl?: string
-  videoFile?: {
-    asset?: {
-      _id?: string
-      url?: string
-    }
-  }
-  caption?: string
-}
+import type { ColumnContentBlock } from '~/types/block.types'
 
 interface Props {
-  content: Array<RichTextBlock | VideoEmbedBlock>
+  content: ColumnContentBlock[]
 }
 
 defineProps<Props>()

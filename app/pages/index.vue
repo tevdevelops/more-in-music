@@ -3,7 +3,8 @@
     <!-- Hero Section -->
     <section
       v-if="homePage.hero"
-      class="relative w-full flex items-center" :class="contentPositionClass"
+      class="relative w-full flex items-center"
+      :class="contentPositionClass"
     >
       <div v-if="heroImageUrl" class="w-full">
         <img
@@ -12,7 +13,7 @@
           class="w-full object-cover"
         />
       </div>
-      <div class="absolute z-10 text-center text-white max-w-[85%] mx-auto" >
+      <div class="absolute z-10 text-center text-white max-w-[85%] mx-auto">
         <img
           v-if="homePage.hero.overlay_logo && homePage.hero.overlay_logo.asset"
           :src="homePage.hero.overlay_logo.asset.url"
@@ -39,13 +40,6 @@
         :section="section"
       />
     </template>
-    
-    <!-- Legacy Content Section (fallback) -->
-    <div v-else-if="homePage.content" class="container mx-auto px-4 py-12 max-w-4xl">
-      <div class="prose prose-lg max-w-none">
-        <PortableText :value="homePage.content" :components="components" />
-      </div>
-    </div>
   </div>
 </template>
 
@@ -54,31 +48,12 @@ import { PortableText } from '@portabletext/vue'
 import type { PortableTextBlock } from '@portabletext/types'
 import imageUrlBuilder from '@sanity/image-url'
 import { getSanityClient } from '~/lib/sanity.client'
-
-interface RichTextBlock {
-  _key: string
-  _type: 'richTextBlock'
-  content?: PortableTextBlock[]
-}
-
-interface VideoEmbedBlock {
-  _key: string
-  _type: 'videoEmbedBlock'
-  videoType: 'youtube' | 'vimeo' | 'upload'
-  youtubeUrl?: string
-  vimeoUrl?: string
-  videoFile?: {
-    asset?: {
-      _id?: string
-      url?: string
-    }
-  }
-  caption?: string
-}
+import { h } from 'vue'
+import type { ColumnContentBlock } from '~/types/block.types'
 
 interface Column {
   _key: string
-  content?: Array<RichTextBlock | VideoEmbedBlock>
+  content?: ColumnContentBlock[]
 }
 
 interface Section {
@@ -187,6 +162,18 @@ const query = `*[_type == "homePage"][0]{
               }
             },
             caption
+          },
+          _type == "galleryBlock" => {
+            ...,
+            images[]{
+              _key,
+              asset-> {
+                _id,
+                url
+              },
+              alt,
+              caption
+            }
           }
         }
       }

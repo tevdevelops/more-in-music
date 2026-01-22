@@ -29,32 +29,11 @@ import type { PortableTextBlock } from '@portabletext/types'
 import imageUrlBuilder from '@sanity/image-url'
 import { getSanityClient } from '~/lib/sanity.client'
 import { h } from 'vue'
-import SectionRenderer from '~/app/components/SectionRenderer.vue'
-
-interface RichTextBlock {
-  _key: string
-  _type: 'richTextBlock'
-  content?: PortableTextBlock[]
-}
-
-interface VideoEmbedBlock {
-  _key: string
-  _type: 'videoEmbedBlock'
-  videoType: 'youtube' | 'vimeo' | 'upload'
-  youtubeUrl?: string
-  vimeoUrl?: string
-  videoFile?: {
-    asset?: {
-      _id?: string
-      url?: string
-    }
-  }
-  caption?: string
-}
+import type { ColumnContentBlock } from '~/types/block.types'
 
 interface Column {
   _key: string
-  content?: Array<RichTextBlock | VideoEmbedBlock>
+  content?: ColumnContentBlock[]
 }
 
 interface Section {
@@ -131,6 +110,18 @@ const query = `*[_type == "page" && slug.current == $slug][0]{
               }
             },
             caption
+          },
+          _type == "galleryBlock" => {
+            ...,
+            images[]{
+              _key,
+              asset-> {
+                _id,
+                url
+              },
+              alt,
+              caption
+            }
           }
         }
       }

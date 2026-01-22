@@ -36,13 +36,12 @@
         </button>
 
         <!-- Desktop menu -->
-        <div v-if="navigationItems.length > 0" class="hidden lg:flex lg:items-center lg:space-x-1">
+        <div v-if="navigationItems.length > 0" class="hidden lg:flex lg:items-center lg:gap-4 lg:space-x-1">
           <template v-for="item in navigationItems" :key="item._key">
             <!-- Dropdown menu item -->
             <div v-if="item.hasChildren" class="relative group">
-              <component
-                :is="item.component"
-                v-bind="item.linkProps"
+              <button
+                @click="toggleDropdown(item._key)"
                 class="text-white mx-2 py-2 hover:opacity-80 flex items-center"
               >
                 {{ item.label }}
@@ -59,30 +58,28 @@
                     d="M19 9l-7 7-7-7"
                   />
                 </svg>
-              </component>
+              </button>
               <div
                 class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200"
               >
                 <template v-for="child in item.children" :key="child._key">
-                  <component
-                    :is="child.component"
+                  <NuxtLink
                     v-bind="child.linkProps"
                     class="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                   >
                     {{ child.label }}
-                  </component>
+                  </NuxtLink>
                 </template>
               </div>
             </div>
             <!-- Simple link item -->
-            <component
+            <NuxtLink
               v-else
-              :is="item.component"
               v-bind="item.linkProps"
               class="text-white mx-2 py-2 hover:opacity-80"
             >
               {{ item.label }}
-            </component>
+            </NuxtLink>
           </template>
         </div>
       </div>
@@ -113,27 +110,25 @@
             </button>
             <div v-show="dropdownStates[item._key]" class="pl-4">
               <template v-for="child in item.children" :key="child._key">
-                <component
-                  :is="child.component"
+                <NuxtLink
                   v-bind="child.linkProps"
                   class="block text-white py-2 px-4 hover:bg-white/20"
                   @click="closeMobileMenu"
                 >
                   {{ child.label }}
-                </component>
+                </NuxtLink>
               </template>
             </div>
           </div>
           <!-- Simple link item (mobile) -->
-          <component
+          <NuxtLink
             v-else
-            :is="item.component"
             v-bind="item.linkProps"
             class="block text-white py-2 px-4 hover:bg-white/20"
             @click="closeMobileMenu"
           >
             {{ item.label }}
-          </component>
+          </NuxtLink>
         </template>
       </div>
     </div>

@@ -20,7 +20,7 @@
             <input
               type="email"
               name="EMAIL"
-              class="required email w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-accent"
+              class="required email w-full px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-brand-accent"
               placeholder="EMAIL"
               id="mce-EMAIL"
               required

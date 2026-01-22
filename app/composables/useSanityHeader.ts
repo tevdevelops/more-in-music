@@ -48,15 +48,9 @@ export interface ChildNavLink {
   }
   externalUrl?: string
   url: string
-  // Computed helper properties
-  isInternal: boolean
-  isExternal: boolean
-  component: 'a' | 'NuxtLink'
   linkProps: {
-    href?: string
-    to?: string
+    to: string
     target?: string
-    rel?: string
   }
 }
 
@@ -77,17 +71,13 @@ export interface NavLink {
   externalUrl?: string
   children?: ChildNavLink[]
   url: string
-  // Computed helper properties
   isInternal: boolean
   isExternal: boolean
   isDropdownOnly: boolean
   hasChildren: boolean
-  component: 'a' | 'NuxtLink' | 'button'
   linkProps: {
-    href?: string
     to?: string
     target?: string
-    rel?: string
   }
 }
 
@@ -132,16 +122,13 @@ function enrichChildNavLink(child: RawChildNavLink): ChildNavLink {
   const url = resolveNavLinkUrl(child)
   const isInternal = child.linkType === 'internal'
   const isExternal = child.linkType === 'external'
-  const component = isExternal ? 'a' : 'NuxtLink'
 
   return {
     ...child,
     url,
-    isInternal,
-    isExternal,
-    component,
     linkProps: {
-      ...(isExternal ? { href: url, target: '_blank', rel: 'noopener noreferrer' } : { to: url }),
+      to: url,
+      ...(isExternal ? { target: '_blank' } : {}),
     },
   }
 }
@@ -155,16 +142,6 @@ function enrichNavLink(item: RawNavLink): NavLink {
   const isExternal = item.linkType === 'external'
   const isDropdownOnly = item.linkType === 'dropdownOnly'
   const hasChildren = Boolean(item.children && item.children.length > 0)
-  
-  // Determine component based on link type and children
-  let component: 'a' | 'NuxtLink' | 'button'
-  if (isDropdownOnly && hasChildren) {
-    component = 'button'
-  } else if (isExternal) {
-    component = 'a'
-  } else {
-    component = 'NuxtLink'
-  }
 
   // Enrich children if they exist
   const enrichedChildren = item.children?.map(enrichChildNavLink)
@@ -176,14 +153,11 @@ function enrichNavLink(item: RawNavLink): NavLink {
     isExternal,
     isDropdownOnly,
     hasChildren,
-    component,
     children: enrichedChildren,
     linkProps: {
       ...(isDropdownOnly && hasChildren
         ? {} // No link props for dropdown-only buttons
-        : isExternal
-        ? { href: url, target: '_blank', rel: 'noopener noreferrer' }
-        : { to: url }),
+        : { to: url, ...(isExternal ? { target: '_blank' } : {}) }),
     },
   }
 }
