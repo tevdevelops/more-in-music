@@ -4,8 +4,7 @@
     :style="sectionStyles"
   >
     <div
-      :class="containerClasses"
-      class="py-12"
+      :class="[containerClasses, paddingClasses]"
     >
       <div :class="gridClasses">
         <div
@@ -41,6 +40,8 @@ interface Section {
       url?: string
     }
   }
+  disablePaddingTop?: boolean
+  disablePaddingBottom?: boolean
   columns?: Column[]
 }
 
@@ -97,6 +98,13 @@ const containerClasses = computed(() => {
     return 'w-full px-4'
   }
   return 'container mx-auto px-4'
+})
+
+// Padding classes (top/bottom can be disabled per section)
+const paddingClasses = computed(() => {
+  const pt = props.section.disablePaddingTop ? 'pt-0' : 'pt-12'
+  const pb = props.section.disablePaddingBottom ? 'pb-0' : 'pb-12'
+  return `${pt} ${pb}`
 })
 
 // Grid classes based on column count

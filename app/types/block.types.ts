@@ -4,6 +4,7 @@ export interface ButtonBlock {
   _key: string
   _type: 'buttonBlock'
   text: string
+  size?: 'small' | 'medium' | 'large'
   linkType?: 'url' | 'reference'
   url?: string
   pageReference?: {
@@ -55,6 +56,7 @@ export interface PageHeaderBlock {
   _key: string
   _type: 'pageHeaderBlock'
   text?: string
+  textAlignment?: 'left' | 'center' | 'right'
   image?: {
     asset?: {
       _id?: string
@@ -64,4 +66,8 @@ export interface PageHeaderBlock {
   }
 }
 
-export type ColumnContentBlock = RichTextBlock | VideoEmbedBlock | GalleryBlock | PageHeaderBlock
+export type ColumnContentBlock =
+  | RichTextBlock
+  | VideoEmbedBlock
+  | GalleryBlock
+  | PageHeaderBlock

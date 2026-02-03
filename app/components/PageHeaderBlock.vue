@@ -1,7 +1,17 @@
 <template>
-  <div class="page-header-block w-full flex items-center justify-center">
+  <div class="page-header-block w-full">
     <div class="flex flex-col items-center justify-center gap-4">
-      <h1 v-if="text" class="text-3xl md:text-4xl font-bold text-center">
+      <h1
+        v-if="text"
+        class="text-brand-dark text-4xl font-bold mb-8 underline decoration-brand-accent decoration-[10px]"
+        :class="
+          textAlignment === 'right'
+            ? 'text-right'
+            : textAlignment === 'left'
+              ? 'text-left'
+              : 'text-center'
+        "
+      >
         {{ text }}
       </h1>
       <img
@@ -30,6 +40,7 @@ interface PageHeaderImage {
 
 interface Props {
   text?: string
+  textAlignment?: 'left' | 'center' | 'right'
   image?: PageHeaderImage
 }
 

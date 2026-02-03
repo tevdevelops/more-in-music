@@ -26,6 +26,7 @@
       <PageHeaderBlock
         v-else-if="block._type === 'pageHeaderBlock'"
         :text="block.text"
+        :text-alignment="block.textAlignment"
         :image="block.image"
       />
     </template>

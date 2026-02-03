@@ -67,6 +67,8 @@ interface Section {
       url?: string
     }
   }
+  disablePaddingTop?: boolean
+  disablePaddingBottom?: boolean
   columns?: Column[]
 }
 
@@ -141,6 +143,8 @@ const query = `*[_type == "homePage"][0]{
           url
         }
       },
+      disablePaddingTop,
+      disablePaddingBottom,
       columns[]{
         _key,
         content[]{
@@ -188,6 +192,18 @@ const query = `*[_type == "homePage"][0]{
               },
               alt,
               caption
+            }
+          },
+          _type == "pageHeaderBlock" => {
+            ...,
+            text,
+            textAlignment,
+            image {
+              asset-> {
+                _id,
+                url
+              },
+              alt
             }
           }
         }

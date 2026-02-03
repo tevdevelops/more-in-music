@@ -60,12 +60,21 @@ export function usePortableTextComponents() {
           href = value.url
         }
 
+        // Size classes: small = current styling (baseline), medium/large = bigger text + padding
+        const sizeClasses: Record<string, string> = {
+          small: 'text-base py-3 px-6',
+          medium: 'text-lg py-4 px-8',
+          large: 'text-2xl py-5 px-10',
+        }
+        // Missing size = legacy content, render as small (current styling)
+        const size = value.size && sizeClasses[value.size] ? value.size : 'small'
+        const sizeClass = sizeClasses[size]
+
         return h(
           'a',
           {
             href,
-            class:
-              'inline-block bg-brand-button text-white py-3 px-6 rounded-full cursor-pointer hover:opacity-90 transition-opacity font-semibold',
+            class: `inline-block bg-brand-button text-white rounded-full cursor-pointer hover:opacity-90 transition-opacity font-semibold ${sizeClass}`,
           },
           value.text
         )
