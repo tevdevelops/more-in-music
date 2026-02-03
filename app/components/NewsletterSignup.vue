@@ -1,7 +1,7 @@
 <template>
   <div id="mc_embed_signup" class="w-full max-w-2xl mx-auto my-12 px-4">
     <h1
-      class="text-center text-brand-dark text-4xl font-bold mb-8 underline decoration-brand-accent decoration-[10px]"
+      class="text-center text-brand-dark text-4xl font-bold mb-8 underline decoration-brand-accent decoration-[10px] leading-normal"
     >
       NEWSLETTER
     </h1>

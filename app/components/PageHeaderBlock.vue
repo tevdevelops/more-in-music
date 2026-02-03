@@ -3,13 +3,13 @@
     <div class="flex flex-col items-center justify-center gap-4">
       <h1
         v-if="text"
-        class="text-brand-dark text-4xl font-bold mb-8 underline decoration-brand-accent decoration-[10px]"
+        class="text-brand-dark text-4xl font-bold mb-8 underline decoration-brand-accent decoration-[10px] leading-normal"
         :class="
           textAlignment === 'right'
             ? 'text-right'
             : textAlignment === 'left'
-              ? 'text-left'
-              : 'text-center'
+            ? 'text-left'
+            : 'text-center'
         "
       >
         {{ text }}

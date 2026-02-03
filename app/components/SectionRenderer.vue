@@ -1,18 +1,26 @@
 <template>
-  <section
-    :class="sectionClasses"
-    :style="sectionStyles"
-  >
-    <div
-      :class="[containerClasses, paddingClasses]"
-    >
+  <section :class="sectionClasses" :style="sectionStyles">
+    <div :class="[containerClasses, paddingClasses]">
+      <h1
+        v-if="props.section.text"
+        class="text-brand-dark text-4xl font-bold mb-8 underline decoration-brand-accent decoration-[10px] leading-normal"
+        :class="
+          props.section.textAlignment === 'right'
+            ? 'text-right'
+            : props.section.textAlignment === 'left'
+            ? 'text-left'
+            : 'text-center'
+        "
+      >
+        {{ props.section.text }}
+      </h1>
       <div :class="gridClasses">
         <div
           v-for="(column, index) in props.section.columns"
           :key="column._key || index"
           :class="columnClasses"
         >
-          <ColumnContentRenderer :content="(column.content || [])" />
+          <ColumnContentRenderer :content="column.content || []" />
         </div>
       </div>
     </div>
@@ -42,6 +50,9 @@ interface Section {
   }
   disablePaddingTop?: boolean
   disablePaddingBottom?: boolean
+  text?: string
+  textAlignment?: 'left' | 'center' | 'right'
+  verticalAlign?: 'top' | 'middle' | 'bottom' | 'stretch'
   columns?: Column[]
 }
 
@@ -66,21 +77,22 @@ const backgroundColorClasses: Record<string, string> = {
 // Section classes
 const sectionClasses = computed(() => {
   const classes = []
-  
+
   if (props.section.backgroundColor) {
-    const bgClass = backgroundColorClasses[props.section.backgroundColor] || 'bg-white'
+    const bgClass =
+      backgroundColorClasses[props.section.backgroundColor] || 'bg-white'
     classes.push(bgClass)
   } else {
     classes.push('bg-white')
   }
-  
+
   return classes.join(' ')
 })
 
 // Section styles (for background image)
 const sectionStyles = computed(() => {
   const styles: Record<string, string> = {}
-  
+
   if (props.section.backgroundImage?.asset) {
     const imageUrl = builder.image(props.section.backgroundImage.asset).url()
     styles.backgroundImage = `url(${imageUrl})`
@@ -88,7 +100,7 @@ const sectionStyles = computed(() => {
     styles.backgroundPosition = 'center'
     styles.backgroundRepeat = 'no-repeat'
   }
-  
+
   return styles
 })
 
@@ -107,17 +119,26 @@ const paddingClasses = computed(() => {
   return `${pt} ${pb}`
 })
 
+// Vertical align classes mapping
+const verticalAlignClasses: Record<string, string> = {
+  top: 'items-start',
+  middle: 'items-center',
+  bottom: 'items-end',
+  stretch: 'items-stretch',
+}
+
 // Grid classes based on column count
 const gridClasses = computed(() => {
   const columnCount = props.section.columns?.length || 1
-  
+  const alignClass = verticalAlignClasses[props.section.verticalAlign || 'top']
+
   if (columnCount === 1) {
-    return 'grid grid-cols-1 gap-6'
+    return `grid grid-cols-1 gap-6 ${alignClass}`
   } else if (columnCount === 2) {
-    return 'grid grid-cols-1 md:grid-cols-2 gap-6'
+    return `grid grid-cols-1 md:grid-cols-2 gap-6 ${alignClass}`
   }
-  
-  return 'grid grid-cols-1 gap-6'
+
+  return `grid grid-cols-1 gap-6 ${alignClass}`
 })
 
 // Column classes

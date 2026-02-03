@@ -35,7 +35,7 @@ export function usePortableTextComponents() {
         return h('img', {
           src: imageUrl,
           alt: value.alt || '',
-          class: 'rounded-lg my-4 max-w-full',
+          class: 'rounded-lg my-4 max-w-full inline-block',
         })
       },
       buttonBlock: ({ value }: any) => {
@@ -74,7 +74,7 @@ export function usePortableTextComponents() {
           'a',
           {
             href,
-            class: `inline-block bg-brand-button text-white rounded-full cursor-pointer hover:opacity-90 transition-opacity font-semibold ${sizeClass}`,
+            class: `inline-block bg-brand-button text-white rounded-full cursor-pointer hover:opacity-90 transition-opacity font-semibold mb-4 mr-4 ${sizeClass}`,
           },
           value.text
         )

@@ -69,6 +69,9 @@ interface Section {
   }
   disablePaddingTop?: boolean
   disablePaddingBottom?: boolean
+  text?: string
+  textAlignment?: 'left' | 'center' | 'right'
+  verticalAlign?: 'top' | 'middle' | 'bottom' | 'stretch'
   columns?: Column[]
 }
 
@@ -145,6 +148,9 @@ const query = `*[_type == "homePage"][0]{
       },
       disablePaddingTop,
       disablePaddingBottom,
+      text,
+      textAlignment,
+      verticalAlign,
       columns[]{
         _key,
         content[]{
