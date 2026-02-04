@@ -3,7 +3,7 @@
     v-navigate-on-click="`/blog/${post.slug}`"
     class="flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-[0_8px_24px_-4px_rgba(48,52,92,0.2)] transition-transform duration-300 hover:-translate-y-1"
   >
-    <div v-if="imageUrl" class="relative h-56 w-full overflow-hidden">
+    <div v-if="imageUrl" class="relative h-100 w-full overflow-hidden">
       <img
         :src="imageUrl"
         :alt="post.title"
@@ -17,7 +17,7 @@
         >
           {{ formattedDate }}
         </p>
-        <h3 class="text-xl font-bold leading-snug md:text-2xl">
+        <h3 class="text-xl font-bold leading-snug">
           {{ post.title }}
         </h3>
         <p

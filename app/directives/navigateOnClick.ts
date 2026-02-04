@@ -10,6 +10,9 @@ function isInteractiveTarget(el: Element, target: EventTarget | null): boolean {
 }
 
 const directive: ObjectDirective<HTMLElement, string> = {
+  getSSRProps() {
+    return {}
+  },
   mounted(el: HTMLElement, binding: DirectiveBinding<string>) {
     const path = binding.value
     if (!path || typeof path !== 'string') return
