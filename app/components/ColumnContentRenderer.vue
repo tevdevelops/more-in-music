@@ -39,6 +39,10 @@
         :header="block.header"
         :limit="block.limit ?? 6"
       />
+      <ContactFormBlock
+        v-else-if="block._type === 'contactFormBlock'"
+        :form-description="block.formDescription"
+      />
     </template>
   </div>
 </template>

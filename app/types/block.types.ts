@@ -80,6 +80,12 @@ export interface BlogCardsBlock {
   limit?: number
 }
 
+export interface ContactFormBlock {
+  _key: string
+  _type: 'contactFormBlock'
+  formDescription?: string
+}
+
 export type ColumnContentBlock =
   | RichTextBlock
   | VideoEmbedBlock
@@ -87,3 +93,4 @@ export type ColumnContentBlock =
   | PageHeaderBlock
   | EventCardsBlock
   | BlogCardsBlock
+  | ContactFormBlock
