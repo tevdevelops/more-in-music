@@ -211,6 +211,11 @@ const query = `*[_type == "homePage"][0]{
               },
               alt
             }
+          },
+          _type == "eventCardsBlock" => {
+            ...,
+            header,
+            filter
           }
         }
       }

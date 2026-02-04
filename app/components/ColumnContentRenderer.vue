@@ -29,6 +29,16 @@
         :text-alignment="block.textAlignment"
         :image="block.image"
       />
+      <EventCardsBlock
+        v-else-if="block._type === 'eventCardsBlock'"
+        :header="block.header"
+        :filter="block.filter ?? 'new'"
+      />
+      <BlogCardsBlock
+        v-else-if="block._type === 'blogCardsBlock'"
+        :header="block.header"
+        :limit="block.limit ?? 6"
+      />
     </template>
   </div>
 </template>

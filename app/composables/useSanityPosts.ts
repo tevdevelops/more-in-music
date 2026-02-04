@@ -1,12 +1,11 @@
-export interface SanityEventSummary {
+export interface SanityPostSummary {
   _id: string
   title: string
   slug: string | null
-  date: string
-  description?: string
-  location?: string
-  rsvpLink?: string
-  image?: {
+  excerpt?: string
+  publishedAt: string
+  author?: string
+  mainImage?: {
     asset?: {
       _id?: string
       url?: string
@@ -20,16 +19,15 @@ export interface SanityEventSummary {
   }
 }
 
-export const useSanityEvents = async () => {
-  const query = `*[_type == "event"] | order(date desc) {
+export const useSanityPosts = async () => {
+  const query = `*[_type == "post"] | order(publishedAt desc) {
     _id,
     title,
     "slug": slug.current,
-    date,
-    description,
-    location,
-    rsvpLink,
-    image{
+    excerpt,
+    publishedAt,
+    author,
+    mainImage{
       asset->{
         _id,
         url,
@@ -43,6 +41,6 @@ export const useSanityEvents = async () => {
     }
   }`
 
-  const { data: events } = await useSanityQuery<SanityEventSummary[]>(query)
-  return events.value
+  const { data: posts } = await useSanityQuery<SanityPostSummary[]>(query)
+  return posts.value
 }

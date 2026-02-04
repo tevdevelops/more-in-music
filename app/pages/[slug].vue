@@ -155,6 +155,11 @@ const query = `*[_type == "page" && slug.current == $slug][0]{
               },
               alt
             }
+          },
+          _type == "eventCardsBlock" => {
+            ...,
+            header,
+            filter
           }
         }
       }

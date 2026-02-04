@@ -66,8 +66,24 @@ export interface PageHeaderBlock {
   }
 }
 
+export interface EventCardsBlock {
+  _key: string
+  _type: 'eventCardsBlock'
+  header?: string
+  filter?: 'all' | 'new' | 'past'
+}
+
+export interface BlogCardsBlock {
+  _key: string
+  _type: 'blogCardsBlock'
+  header?: string
+  limit?: number
+}
+
 export type ColumnContentBlock =
   | RichTextBlock
   | VideoEmbedBlock
   | GalleryBlock
   | PageHeaderBlock
+  | EventCardsBlock
+  | BlogCardsBlock
